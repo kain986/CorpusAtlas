@@ -1,0 +1,342 @@
+<meta charset="utf-8">
+<title>Atlante Corpus</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: strumento da museo notturno — vista 3D centrale, pannello di navigazione a sinistra, scheda a destra.
+   Palette ispirata alla colorazione istologica ematossilina-eosina. Tema scuro deliberato, unico. */
+:root{
+  color-scheme: dark;
+  --ink:#0b0e13; --ink-2:#10151c; --panel:#131921; --panel-2:#19212b; --line:#252f3c; --line-2:#334051;
+  --bone:#ece5d6; --text:#d9d4c9; --muted:#8c96a3; --faint:#5d6773;
+  --eosin:#e8789c; --eosin-d:#b84f74; --hema:#9389ec; --gold:#d8b45c; --ok:#79c29a;
+  --f-display:'Bodoni Moda', 'Didot', 'Bodoni 72', Georgia, serif;
+  --f-ui:'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-mono:'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --r:10px; --side-w:300px; --info-w:360px;
+}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{background:var(--ink);color:var(--text);font-family:var(--f-ui);font-size:14px;line-height:1.45;overflow:hidden;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--eosin);outline-offset:2px}
+#app{height:100%;display:grid;grid-template-rows:auto 1fr;min-height:0}
+/* ---- top bar ---- */
+.top{display:flex;align-items:center;gap:18px;padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0e131a, #0b0e13)}
+.brand{display:flex;align-items:baseline;gap:10px;white-space:nowrap}
+.brand b{font-family:var(--f-display);font-weight:500;font-style:italic;font-size:24px;letter-spacing:.01em;color:var(--bone)}
+.brand span{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.tabs{display:flex;gap:4px;background:var(--ink-2);border:1px solid var(--line);border-radius:999px;padding:3px}
+.tabs button{border:0;background:transparent;padding:6px 16px;border-radius:999px;cursor:pointer;color:var(--muted);font-weight:500;letter-spacing:.01em}
+.tabs button[aria-selected="true"]{background:var(--bone);color:var(--ink)}
+.top .spacer{flex:1}
+.top .credit{font-size:12px;color:var(--faint);white-space:nowrap}
+.top .credit button{background:none;border:0;color:var(--muted);text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:0}
+/* ---- views ---- */
+.view{display:grid;grid-template-columns:var(--side-w) minmax(0,1fr) var(--info-w);min-height:0;height:100%}
+.side{background:var(--panel);border-right:1px solid var(--line);min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.side.right{border-right:0;border-left:1px solid var(--line)}
+.scroll{overflow:auto;min-height:0;flex:1;scrollbar-width:thin;scrollbar-color:var(--line-2) transparent}
+.sec{padding:14px 16px;border-bottom:1px solid var(--line)}
+.sec h3{margin:0 0 10px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:500;display:flex;justify-content:space-between;align-items:center}
+.sec h3 small{letter-spacing:0;text-transform:none;font-family:var(--f-mono);color:var(--faint)}
+.search{position:relative}
+.search input{width:100%;box-sizing:border-box;background:var(--ink-2);border:1px solid var(--line-2);border-radius:8px;padding:9px 12px 9px 34px;outline:none}
+.search input:focus{border-color:var(--eosin)}
+.search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:15px;height:15px;stroke:var(--muted);fill:none;stroke-width:2}
+.results{margin-top:6px;display:flex;flex-direction:column;max-height:280px;overflow:auto}
+.results button{display:flex;gap:8px;align-items:baseline;text-align:left;background:none;border:0;padding:6px 8px;border-radius:6px;cursor:pointer}
+.results button:hover,.results button:focus-visible{background:var(--panel-2)}
+.results .en{color:var(--faint);font-size:12px;margin-left:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:45%}
+.dot{width:9px;height:9px;border-radius:50%;flex:none;display:inline-block;box-shadow:0 0 0 1px rgba(255,255,255,.12) inset}
+/* presets */
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line-2);background:var(--ink-2);border-radius:999px;padding:5px 11px;font-size:12.5px;cursor:pointer;color:var(--text)}
+.chip:hover{border-color:var(--muted)}
+.chip.on{background:var(--bone);border-color:var(--bone);color:var(--ink)}
+/* systems */
+.sys{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:8px;padding:5px 4px;border-radius:6px}
+.sys:hover{background:var(--panel-2)}
+.sys label{cursor:pointer;display:flex;align-items:center;gap:9px;min-width:0}
+.sys .n{font-family:var(--f-mono);font-size:11px;color:var(--faint)}
+.sys input[type=checkbox]{appearance:none;width:15px;height:15px;border:1.5px solid var(--line-2);border-radius:4px;margin:0;cursor:pointer;display:grid;place-content:center}
+.sys input[type=checkbox]:checked{background:var(--bone);border-color:var(--bone)}
+.sys input[type=checkbox]:checked::after{content:"";width:8px;height:4px;border:2px solid var(--ink);border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.sys .solo{border:0;background:none;color:var(--faint);font-size:11px;cursor:pointer;padding:2px 4px;border-radius:4px}
+.sys .solo:hover{color:var(--bone);background:var(--line)}
+/* structure list */
+.grp{margin-bottom:8px}
+.grp-t{font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:7px;margin:8px 0 4px}
+.st-btn{display:block;width:100%;text-align:left;border:0;background:none;padding:5px 8px 5px 16px;border-radius:6px;cursor:pointer;color:var(--text)}
+.st-btn:hover{background:var(--panel-2)}
+.st-btn.on{background:#2a1f29;color:var(--bone);box-shadow:inset 2px 0 0 var(--eosin)}
+/* ---- stage ---- */
+.stage{position:relative;min-width:0;min-height:0;overflow:hidden;background:radial-gradient(120% 90% at 50% 38%, #1b2430 0%, #10151c 45%, #0a0d12 100%)}
+.stage canvas.gl{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.hud{position:absolute;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;pointer-events:none;justify-content:center}
+.hud>*{pointer-events:auto}
+.tool{display:flex;align-items:center;gap:8px;background:rgba(16,21,28,.86);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:12px;padding:8px 12px}
+.tool label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.tool input[type=range]{width:104px;accent-color:var(--eosin)}
+.tool select{background:var(--ink-2);border:1px solid var(--line-2);border-radius:6px;padding:3px 6px;font-size:12.5px}
+.ibtn{border:1px solid var(--line-2);background:var(--ink-2);border-radius:8px;padding:6px 10px;font-size:12.5px;cursor:pointer;white-space:nowrap}
+.ibtn:hover{border-color:var(--muted)}
+.ibtn.on{background:var(--eosin);border-color:var(--eosin);color:#1a0d13;font-weight:600}
+.corner{position:absolute;top:12px;left:12px;display:flex;gap:6px;flex-wrap:wrap}
+.corner.r{left:auto;right:12px}
+.tip{position:absolute;pointer-events:none;background:rgba(10,13,18,.92);border:1px solid var(--line-2);border-radius:8px;padding:6px 10px;font-size:13px;color:var(--bone);transform:translate(14px,14px);white-space:nowrap;max-width:320px;overflow:hidden;text-overflow:ellipsis}
+.tip small{display:block;color:var(--muted);font-size:11px}
+.loader{position:absolute;inset:0;display:grid;place-content:center;gap:14px;text-align:center;background:rgba(10,13,18,.55);transition:opacity .5s}
+.loader .ttl{font-family:var(--f-display);font-style:italic;font-size:28px;color:var(--bone)}
+.loader .bar{width:min(320px,70vw);height:3px;background:var(--line);border-radius:3px;overflow:hidden;margin:auto}
+.loader .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--hema),var(--eosin));transition:width .3s}
+.loader .sub{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.loader.done{opacity:0;pointer-events:none}
+.legend-axes{position:absolute;right:14px;top:14px;font-family:var(--f-mono);font-size:10.5px;color:var(--faint);text-align:right;letter-spacing:.06em}
+/* ---- info panel ---- */
+.info-empty{padding:22px 18px;color:var(--muted)}
+.info-empty h2{font-family:var(--f-display);font-style:italic;font-weight:500;color:var(--bone);font-size:26px;line-height:1.1;margin:0 0 12px}
+.info-empty p{margin:0 0 10px;max-width:60ch}
+.kicker{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.card-h{padding:18px 18px 12px;border-bottom:1px solid var(--line)}
+.card-h h2{font-family:var(--f-display);font-weight:500;font-size:27px;line-height:1.08;color:var(--bone);margin:8px 0 4px;text-wrap:balance}
+.card-h .en{font-style:italic;color:var(--muted);font-size:13px}
+.card-b{padding:14px 18px 18px}
+.card-b p{margin:0 0 11px;max-width:65ch}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:12px 0 4px;font-size:13px}
+.facts dt{color:var(--muted)}
+.facts dd{margin:0;color:var(--bone);font-variant-numeric:tabular-nums}
+.mono{font-family:var(--f-mono);font-size:12.5px}
+.actions{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 4px}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line-2);border-radius:999px;padding:2px 9px;font-size:11.5px;color:var(--text);letter-spacing:0;text-transform:none}
+.link{background:none;border:0;padding:0;color:var(--eosin);cursor:pointer;text-align:left;text-decoration:underline;text-underline-offset:3px}
+.sub-h{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:18px 0 8px;font-weight:500}
+.note{font-size:12px;color:var(--faint);margin-top:14px}
+.extlinks{display:flex;flex-wrap:wrap;gap:6px}
+.extlinks a{color:var(--text);border:1px solid var(--line-2);border-radius:6px;padding:4px 9px;font-size:12px;text-decoration:none}
+.extlinks a:hover{border-color:var(--eosin);color:var(--bone)}
+/* gene list */
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.filters select{background:var(--ink-2);border:1px solid var(--line-2);border-radius:6px;padding:6px 8px;font-size:12.5px;min-width:0}
+.vlist{position:relative;overflow:auto;flex:1;min-height:0;scrollbar-width:thin;scrollbar-color:var(--line-2) transparent}
+.vlist .row{position:absolute;left:0;right:0;height:46px;display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:10px;align-items:center;padding:0 16px;cursor:pointer;border-bottom:1px solid #1a212b;box-sizing:border-box}
+.vlist .row:hover{background:var(--panel-2)}
+.vlist .row.on{background:#2a1f29;box-shadow:inset 3px 0 0 var(--eosin)}
+.vlist .sym{font-family:var(--f-mono);font-weight:500;color:var(--bone);font-size:13px;grid-row:1}
+.vlist .loc{font-family:var(--f-mono);font-size:11px;color:var(--faint);grid-row:1;justify-self:end}
+.vlist .nm{grid-column:1/3;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.count{font-family:var(--f-mono);font-size:11px;color:var(--faint);padding:6px 16px;border-bottom:1px solid var(--line)}
+.subtabs{position:absolute;top:12px;left:50%;transform:translateX(-50%);display:flex;gap:3px;background:rgba(16,21,28,.86);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:999px;padding:3px;z-index:2;max-width:calc(100% - 24px);overflow-x:auto}
+.subtabs button{border:0;background:none;padding:6px 14px;border-radius:999px;cursor:pointer;color:var(--muted);white-space:nowrap;font-size:13px}
+.subtabs button[aria-selected="true"]{background:var(--hema);color:#0d0b1a;font-weight:600}
+canvas.chart{width:100%;display:block}
+.seq{display:flex;flex-wrap:wrap;gap:2px;font-family:var(--f-mono);font-size:12px;margin-top:6px}
+.seq span{padding:2px 3px;border-radius:3px;cursor:pointer}
+.codon{display:inline-flex;flex-direction:column;align-items:center;border:1px solid var(--line);border-radius:6px;padding:3px 4px;min-width:34px}
+.codon b{font-family:var(--f-mono);font-weight:500;font-size:11.5px;letter-spacing:.06em}
+.codon i{font-style:normal;font-size:11px;color:var(--muted)}
+.codon.mut{border-color:var(--eosin);background:#2a1620}
+.codon.hl{border-color:var(--gold)}
+.codons{display:flex;flex-wrap:wrap;gap:4px}
+textarea.seqin{width:100%;box-sizing:border-box;background:var(--ink-2);border:1px solid var(--line-2);border-radius:8px;padding:8px 10px;font-family:var(--f-mono);font-size:12px;color:var(--bone);resize:vertical;min-height:64px;letter-spacing:.08em}
+.err{color:var(--eosin);font-size:12px;margin-top:4px}
+.mobile-bar{display:none}
+.about{position:fixed;inset:0;background:rgba(5,7,10,.7);display:grid;place-items:center;z-index:50;padding:16px}
+.about>div{background:var(--panel);border:1px solid var(--line-2);border-radius:14px;max-width:620px;max-height:80vh;overflow:auto;padding:22px 24px}
+.about h2{font-family:var(--f-display);font-style:italic;font-weight:500;color:var(--bone);margin:0 0 10px;font-size:26px}
+.about p,.about li{max-width:65ch;color:var(--text)}
+.about a{color:var(--eosin)}
+/* ---- responsive ---- */
+@media (max-width: 1180px){ :root{--side-w:260px;--info-w:320px} }
+@media (max-width: 900px){
+  .top{gap:10px;flex-wrap:wrap}
+  .brand span,.top .credit{display:none}
+  .view{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
+  .side.left{position:absolute;z-index:20;left:0;top:0;bottom:0;width:min(330px,88vw);transform:translateX(-102%);transition:transform .25s;box-shadow:12px 0 40px rgba(0,0,0,.5);padding-left:env(safe-area-inset-left,0px)}
+  .side.left.open{transform:none}
+  .view{position:relative}
+  .side.right{position:absolute;z-index:15;left:0;right:0;bottom:0;max-height:52%;border-left:0;border-top:1px solid var(--line);border-radius:14px 14px 0 0;transform:translateY(102%);transition:transform .25s;box-shadow:0 -12px 40px rgba(0,0,0,.5);padding-bottom:env(safe-area-inset-bottom,0px)}
+  .side.right.open{transform:none}
+  .mobile-bar{display:flex;gap:6px;position:absolute;top:12px;left:max(12px,env(safe-area-inset-left,0px));z-index:5}
+  .corner{top:56px}
+  .subtabs{top:56px}
+  .tool input[type=range]{width:90px}
+  .hud{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;left:0;right:0;padding:0 12px 4px;scrollbar-width:none}
+  .hud::-webkit-scrollbar{display:none}
+  .hud>*{flex:none}
+  .sheet-close{display:block!important}
+}
+.topleft{position:absolute;top:12px;left:max(12px,env(safe-area-inset-left,0px));display:flex;gap:6px;align-items:center;flex-wrap:wrap;z-index:6}
+.topleft .mobile-bar{position:static}
+.seg{display:flex;gap:2px;background:rgba(16,21,28,.86);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{border:0;background:none;color:var(--muted);padding:5px 14px;border-radius:999px;cursor:pointer;font-size:13px;font-weight:500}
+.seg button[aria-pressed="true"]{background:var(--eosin);color:#1a0d13}
+.media{margin:0 0 14px}
+.media-tabs{display:flex;gap:2px;background:var(--ink-2);border:1px solid var(--line);border-radius:999px;padding:3px;width:max-content;max-width:100%;margin-bottom:8px}
+.media-tabs button{border:0;background:none;color:var(--muted);padding:4px 12px;border-radius:999px;cursor:pointer;font-size:12.5px}
+.media-tabs button[aria-selected="true"]{background:var(--bone);color:var(--ink);font-weight:500}
+.media-fig{position:relative;margin:0;aspect-ratio:4/3;max-width:100%;border-radius:10px;overflow:hidden;background:#0a0d12;border:1px solid var(--line);display:grid;place-items:center}
+.media-fig img{width:100%;height:100%;object-fit:contain;display:block;opacity:0;transition:opacity .35s}
+.media-fig.ready img{opacity:1}
+.media-fig a{display:block;width:100%;height:100%}
+.media-fig.loading span,.media-fig.empty span{color:var(--muted);font-size:12.5px;text-align:center;padding:0 18px;max-width:34ch}
+.media-fig.empty{gap:10px;align-content:center}
+.media-fig.empty a{width:auto;height:auto}
+.media-fig.loading{background:linear-gradient(100deg,#0a0d12 30%,#141b24 50%,#0a0d12 70%);background-size:200% 100%;animation:shimmer 1.4s linear infinite}
+@keyframes shimmer{to{background-position:-200% 0}}
+.media-nav{position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;border:1px solid var(--line-2);background:rgba(10,13,18,.75);color:var(--bone);font-size:20px;line-height:1;cursor:pointer;display:grid;place-items:center}
+.media-nav.prev{left:8px}.media-nav.next{right:8px}
+.media-count{position:absolute;right:8px;bottom:8px;font-family:var(--f-mono);font-size:11px;color:var(--bone);background:rgba(10,13,18,.75);border-radius:6px;padding:2px 6px}
+.media-cap{font-size:12.5px;color:var(--text);margin:8px 0 0!important}
+.media-credit{font-size:11px;color:var(--faint);margin:6px 0 0!important;overflow-wrap:anywhere}
+.media-credit a{color:var(--muted)}
+.vlist .row:focus-visible{outline:2px solid var(--eosin);outline-offset:-2px}
+.sheet-close{display:none;position:absolute;right:10px;top:10px;z-index:2}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div id="app">
+  <header class="top">
+    <div class="brand"><b>Corpus</b><span>atlante 3D · anatomia e genoma</span></div>
+    <nav class="tabs" role="tablist" aria-label="Sezioni">
+      <button role="tab" id="tab-anat" aria-selected="true">Anatomia</button>
+      <button role="tab" id="tab-gen" aria-selected="false">Genoma</button>
+    </nav>
+    <div class="spacer"></div>
+    <div class="credit">Dati: BodyParts3D · HRA · Ensembl · GTEx · <button id="btn-about">fonti e licenze</button></div>
+  </header>
+
+  <!-- ================= ANATOMIA ================= -->
+  <section class="view" id="v-anat">
+    <aside class="side left" id="anat-left">
+      <div class="sec">
+        <div class="search">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="anat-q" type="search" placeholder="Cerca una struttura (es. femore, aorta)" autocomplete="off" aria-label="Cerca una struttura anatomica">
+        </div>
+        <div class="results" id="anat-res"></div>
+      </div>
+      <div class="scroll">
+        <div class="sec">
+          <h3>Viste rapide</h3>
+          <div class="chips" id="presets"></div>
+        </div>
+        <div class="sec">
+          <h3>Apparati e sistemi <small id="sys-count"></small></h3>
+          <div id="sys-list"></div>
+        </div>
+        <div class="sec">
+          <h3>Organi e regioni</h3>
+          <div id="struct-list"></div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="stage" id="anat-stage">
+      <div class="topleft">
+        <div class="mobile-bar">
+          <button class="ibtn" data-open="anat-left">☰ Esplora</button>
+          <button class="ibtn" data-open="anat-info">Scheda</button>
+        </div>
+        <div class="seg" id="sex-sw" role="group" aria-label="Modello anatomico">
+          <button data-sex="m" aria-pressed="true">Uomo</button>
+          <button data-sex="f" aria-pressed="false">Donna</button>
+        </div>
+      </div>
+      <div class="corner r">
+        <button class="ibtn" id="btn-quality" title="Occlusione ambientale e antialiasing">Qualità alta</button>
+        <button class="ibtn" id="btn-rotate">Rotazione</button>
+        <button class="ibtn" id="btn-reset">Ripristina vista</button>
+      </div>
+      <div class="hud">
+        <div class="tool">
+          <label for="explode">Esploso</label>
+          <input id="explode" type="range" min="0" max="1" step="0.01" value="0">
+        </div>
+        <div class="tool">
+          <label for="clip-axis">Sezione</label>
+          <select id="clip-axis">
+            <option value="off">nessuna</option>
+            <option value="x">sagittale</option>
+            <option value="z">coronale</option>
+            <option value="y">trasversale</option>
+          </select>
+          <input id="clip-pos" type="range" min="0" max="1" step="0.002" value="0.5" disabled aria-label="Posizione del piano di sezione">
+        </div>
+        <div class="tool">
+          <label for="ghost">Contesto</label>
+          <input id="ghost" type="range" min="0.02" max="1" step="0.01" value="0.08">
+        </div>
+      </div>
+      <div class="tip" id="anat-tip" hidden></div>
+      <div class="loader" id="anat-loader">
+        <div class="ttl" id="anat-ttl">Composizione del corpo</div>
+        <div class="bar"><i id="anat-bar"></i></div>
+        <div class="sub" id="anat-sub">Caricamento del modello anatomico…</div>
+      </div>
+    </div>
+
+    <aside class="side right" id="anat-info">
+      <button class="ibtn sheet-close" data-close="anat-info">Chiudi</button>
+      <div class="scroll" id="anat-card"></div>
+    </aside>
+  </section>
+
+  <!-- ================= GENOMA ================= -->
+  <section class="view" id="v-gen" hidden>
+    <aside class="side left" id="gen-left">
+      <div class="sec">
+        <div class="search">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="gene-q" type="search" placeholder="Cerca un gene (es. TP53, insulina, emoglobina)" autocomplete="off" aria-label="Cerca un gene">
+        </div>
+        <div class="filters">
+          <select id="f-chr" aria-label="Cromosoma"><option value="">Tutti i cromosomi</option></select>
+          <select id="f-type" aria-label="Tipo di gene">
+            <option value="c">Codificanti proteine</option>
+            <option value="nc">RNA non codificanti</option>
+            <option value="ps">Pseudogeni</option>
+            <option value="note">Con scheda illustrata</option>
+            <option value="">Tutti i geni</option>
+          </select>
+        </div>
+      </div>
+      <div class="count" id="gene-count">Caricamento del catalogo…</div>
+      <div class="vlist" id="gene-list"><div id="gene-spacer"></div></div>
+    </aside>
+
+    <div class="stage" id="gen-stage">
+      <div class="mobile-bar">
+        <button class="ibtn" data-open="gen-left">☰ Geni</button>
+        <button class="ibtn" data-open="gen-info">Scheda</button>
+      </div>
+      <div class="subtabs" role="tablist" aria-label="Scale del DNA">
+        <button role="tab" data-g="helix" aria-selected="true">Doppia elica</button>
+        <button role="tab" data-g="chromatin" aria-selected="false">Cromatina</button>
+        <button role="tab" data-g="karyo" aria-selected="false">Cariotipo</button>
+      </div>
+      <div class="hud" id="gen-hud"></div>
+      <div class="tip" id="gen-tip" hidden></div>
+    </div>
+
+    <aside class="side right" id="gen-info">
+      <button class="ibtn sheet-close" data-close="gen-info">Chiudi</button>
+      <div class="scroll" id="gen-card"></div>
+    </aside>
+  </section>
+</div>
+
+<div class="about" id="about" hidden>
+  <div role="dialog" aria-modal="true" aria-labelledby="about-t">
+    <h2 id="about-t">Fonti e licenze</h2>
+    <p><b>Modello anatomico:</b> BodyParts3D 4.0, © The Database Center for Life Science, licenza CC BY 4.0 (Mitsuhashi et al., <i>Nucleic Acids Research</i> 2009). Geometria semplificata per il browser dal progetto open source <i>human-atlas</i> (MIT). 2.234 strutture di un maschio adulto di riferimento; il modello non contiene tutte le strutture del corpo (per esempio il parenchima polmonare e la tiroide non sono presenti). Nomi italiani e descrizioni redatti per questa app.</p>
+    <p><b>Modello femminile:</b> Kristen Browne e Heidi Schlehlein, Human Reference Atlas / HuBMAP, <i>3D Reference Organ Set for Female</i> v1.5 (2023), licenza CC BY 4.0, DOI 10.48539/HBM352.BTSQ.586. Geometria semplificata dal progetto <i>human-atlas</i>. 888 strutture di una donna adulta di riferimento: organi interni molto dettagliati, ma scheletro e muscoli solo in parte. Le regioni dell'encefalo derivano dall'atlante dell'Allen Institute incluso nel set.</p>
+    <p><b>Catalogo dei geni:</b> annotazione Ensembl 110 (GRCh38) e sinonimi HGNC, nella versione distribuita dal progetto Ideogram.js (CC0). Bande citogenetiche NCBI GRCh38. Domini proteici Pfam/InterPro. Espressione nei tessuti: mediane GTEx in TPM.</p>
+    <p><b>Foto:</b> le immagini reali e al microscopio sono cercate al momento su Wikimedia Commons; ogni foto riporta autore e licenza e rimanda alla pagina originale. Sono selezionate automaticamente da una ricerca mirata, quindi alcune possono essere meno pertinenti: usa le frecce per vederne altre.</p>
+    <p><b>Uso:</b> strumento educativo. Non è un riferimento clinico né diagnostico. I nomi ufficiali dei geni sono in inglese, come nelle banche dati internazionali; le categorie in italiano sono dedotte dal nome e vanno considerate indicative.</p>
+    <p><a href="https://dbarchive.biosciencedbc.jp/en/bodyparts3d/download.html" target="_blank" rel="noopener">BodyParts3D</a> · <a href="https://lod.humanatlas.io/ref-organ/united-female/v1.5" target="_blank" rel="noopener">Human Reference Atlas</a> · <a href="https://www.ensembl.org" target="_blank" rel="noopener">Ensembl</a> · <a href="https://www.genenames.org" target="_blank" rel="noopener">HGNC</a> · <a href="https://gtexportal.org" target="_blank" rel="noopener">GTEx</a> · <a href="https://github.com/eweitz/ideogram" target="_blank" rel="noopener">Ideogram.js</a></p>
+    <button class="ibtn" id="about-close">Chiudi</button>
+  </div>
+</div>

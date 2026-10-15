@@ -1,0 +1,655 @@
+{
+ "systems": {
+  "skeletal": {
+   "desc": "Il modello femminile di riferimento contiene solo una parte dello scheletro: colonna vertebrale dalla prima vertebra cervicale al coccige, bacino (ileo, ischio e pube, con osso compatto e spugnoso separati) e arti inferiori fino al ginocchio, ricostruito in grande dettaglio con legamenti crociati e collaterali, menischi e cartilagini articolari.\n\nIl bacino femminile è più largo e più basso di quello maschile, con un ingresso pelvico arrotondato e un angolo sottopubico più ampio (circa 80–90° contro 50–60°): sono adattamenti al passaggio del feto durante il parto. Questa donatrice presenta inoltre sei vertebre lombari, una variante anatomica che riguarda una piccola percentuale di persone."
+  },
+  "muscular": {
+   "desc": "In questo modello la muscolatura è rappresentata solo in parte: i sei muscoli estrinseci di ciascun occhio e il retto femorale con il tendine del quadricipite, ricostruiti insieme al ginocchio. Per esplorare l'intero sistema muscolare usa il modello maschile.\n\nNella donna la massa muscolare è in media circa il 30–35% del peso corporeo, contro il 40–45% dell'uomo, soprattutto per l'effetto del testosterone sulla crescita delle fibre."
+  },
+  "reproductive": {
+   "desc": "L'apparato genitale femminile comprende le ovaie, che producono gli ovociti e gli ormoni estrogeni e progesterone, le tube uterine, che raccolgono l'ovocita e sono il luogo della fecondazione, l'utero, dove l'embrione si impianta e si sviluppa, e la vagina. Un sistema di legamenti (largo, rotondo, cardinali, uterosacrali, ovarici) mantiene gli organi nella loro posizione nel bacino.\n\nAlla nascita ogni ovaio contiene circa un milione di follicoli primordiali; ne restano circa 400.000 alla pubertà e solo 400–500 arriveranno all'ovulazione nel corso della vita fertile. Il ciclo mestruale, di circa 28 giorni, coordina maturazione del follicolo, ovulazione e preparazione dell'endometrio. In questo modello è inclusa anche la ghiandola mammaria."
+  },
+  "integumentary": {
+   "desc": "La cute è l'organo più esteso: circa 1,6 m² nella donna adulta. Protegge da microrganismi, raggi UV e perdita d'acqua, regola la temperatura e ospita recettori per tatto, dolore e temperatura. Nella donna il tessuto adiposo sottocutaneo è in media più abbondante e si distribuisce soprattutto su fianchi, cosce e mammelle, per effetto degli estrogeni.\n\nNel modello la cute è semitrasparente; il tessuto adiposo della mammella è incluso in questo sistema."
+  },
+  "pregnancy": {
+   "name": "Gravidanza",
+   "color": "#e3a6c4",
+   "desc": "Il modello include una serie di strutture della gravidanza: placenta con la placca coriale e la placca basale, amnios e cordone ombelicale con due arterie e una vena. Sono nascoste all'apertura; attivale dalla lista dei sistemi.\n\nLa placenta è l'organo di scambio tra madre e feto: a termine pesa circa 500 g e ha un diametro di circa 22 cm. Il sangue materno e quello fetale non si mescolano: ossigeno, nutrienti e anticorpi passano attraverso una sottile barriera di tessuto. Nel cordone ombelicale le due arterie portano alla placenta sangue povero di ossigeno dal feto, la vena riporta al feto sangue ossigenato."
+  }
+ },
+ "structures": [
+  {
+   "ref": "colonna",
+   "match": [
+    "vertebra",
+    "^atlante|^vertebral bone",
+    "^fused sacrum$",
+    "^coccyx$"
+   ],
+   "desc": "La colonna vertebrale è l'asse portante del corpo: 7 vertebre cervicali, 12 toraciche, di solito 5 lombari, il sacro e il coccige. Questa donatrice ha sei vertebre lombari, una variante presente in una piccola percentuale della popolazione, di solito senza sintomi.\n\nVista di lato, la colonna ha quattro curve che distribuiscono il peso e funzionano come una molla. Nella donna la lordosi lombare è in media più accentuata e durante la gravidanza aumenta ancora, per compensare lo spostamento in avanti del baricentro. Le prime due vertebre sono speciali: l'atlante sostiene il cranio, l'epistrofeo con il suo dente permette la rotazione della testa.",
+   "facts": [
+    [
+     "Vertebre lombari in questo modello",
+     "6 (variante)"
+    ],
+    [
+     "Curve fisiologiche",
+     "4"
+    ]
+   ]
+  },
+  {
+   "key": "bacino-f",
+   "name": "Bacino femminile",
+   "sys": "skeletal",
+   "match": [
+    "compact bone tissue",
+    "trabecular bone tissue",
+    "^fused sacrum$",
+    "^coccyx$"
+   ],
+   "desc": "Ogni osso dell'anca nasce dalla fusione di tre ossa, ileo, ischio e pube, che si saldano verso i 15–17 anni nell'acetabolo. Nel modello ciascuna è divisa in osso compatto, lo strato esterno denso e resistente, e osso spugnoso, la rete di trabecole interna che alleggerisce l'osso e ospita il midollo.\n\nIl bacino femminile è più largo, più basso e più leggero di quello maschile. L'ingresso pelvico è ovale o rotondo invece che a cuore, le spine ischiatiche sono meno sporgenti e l'angolo sottopubico è più ampio. Queste caratteristiche formano il canale del parto, che il feto attraversa ruotando la testa per adattarsi ai diversi diametri.",
+   "facts": [
+    [
+     "Angolo sottopubico",
+     "circa 80–90° (uomo 50–60°)"
+    ],
+    [
+     "Diametro trasverso dell'ingresso",
+     "circa 13 cm"
+    ]
+   ]
+  },
+  {
+   "key": "ginocchio",
+   "name": "Ginocchio",
+   "sys": "skeletal",
+   "match": [
+    "^femur$",
+    "^tibia$",
+    "^fibula$",
+    "^patella$",
+    "cruciate",
+    "collateral ligament",
+    "patellar",
+    "condyle",
+    "intercondylar",
+    "articular cartilage",
+    "articular disk",
+    "anterolateral ligament",
+    "enthesis",
+    "perichondular",
+    "quadriceps",
+    "rectus femoris"
+   ],
+   "desc": "Il ginocchio è la più grande articolazione del corpo. Unisce il femore alla tibia, con la rotula che scorre in un solco del femore. Le superfici sono rivestite di cartilagine articolare, e tra femore e tibia due menischi a forma di C migliorano la congruenza e distribuiscono il carico.\n\nLa stabilità è affidata ai legamenti: i crociati anteriore e posteriore, all'interno dell'articolazione, impediscono lo scivolamento in avanti e indietro della tibia; i collaterali mediale e laterale impediscono l'apertura laterale. Il tendine del quadricipite, la rotula e il legamento rotuleo formano l'apparato estensore.\n\nNelle donne le lesioni del legamento crociato anteriore negli sport sono da due a otto volte più frequenti che negli uomini, per differenze di allineamento, controllo neuromuscolare e fattori ormonali.",
+   "facts": [
+    [
+     "Menischi",
+     "2 per ginocchio"
+    ],
+    [
+     "Legamenti principali",
+     "crociati anteriore e posteriore, collaterali mediale e laterale"
+    ]
+   ]
+  },
+  {
+   "ref": "muscoli-occhio",
+   "match": [
+    "^(superior|inferior|medial|lateral) rectus$",
+    "^(superior|inferior) oblique$"
+   ]
+  },
+  {
+   "key": "cuore-f",
+   "ref": "cuore",
+   "match": [
+    "atrium$",
+    "ventricle$",
+    "valve$",
+    "papillary",
+    "septum",
+    "coronary sinus",
+    "cardiac vein",
+    "vein of heart",
+    "vein of atrium",
+    "vein of ventricle",
+    "^marginal vein$"
+   ],
+   "exclude": [
+    "lateral ventricle",
+    "^fourth ventricle$",
+    "^third ventricle$"
+   ]
+  },
+  {
+   "ref": "coronarie",
+   "match": [
+    "coronary artery",
+    "circumflex",
+    "diagonal branch",
+    "^marginal artery$",
+    "marginal branch of coronary"
+   ]
+  },
+  {
+   "ref": "aorta",
+   "match": [
+    "aorta$",
+    "^arch of aorta$",
+    "brachiocephalic",
+    "common carotid",
+    "subclavian artery",
+    "celiac trunk",
+    "mesenteric artery",
+    "^renal artery$",
+    "colic artery",
+    "sigmoid artery",
+    "splenic artery",
+    "rectal artery",
+    "hepatic artery",
+    "cystic artery"
+   ]
+  },
+  {
+   "ref": "vene-cave",
+   "match": [
+    "vena cava",
+    "common iliac vein",
+    "internal iliac vein",
+    "^renal vein$",
+    "median sacral vein",
+    "internal pudendal vein"
+   ]
+  },
+  {
+   "ref": "circolo-polmonare",
+   "match": [
+    "pulmonary (artery|trunk|vein)",
+    "branch of pulmonary artery"
+   ]
+  },
+  {
+   "ref": "vena-porta",
+   "match": [
+    "portal vein",
+    "mesenteric vein",
+    "splenic vein",
+    "pancreaticoduodenal vein",
+    "colic vein",
+    "ileocolic vein",
+    "sigmoid vein",
+    "rectal vein",
+    "cystic vein"
+   ]
+  },
+  {
+   "key": "polmoni-f",
+   "name": "Bronchi e segmenti polmonari",
+   "sys": "respiratory",
+   "match": [
+    "trachea",
+    "bronch",
+    "carina",
+    "lung hilus"
+   ],
+   "desc": "La trachea si divide alla carena nei due bronchi principali; questi danno i bronchi lobari (tre a destra, due a sinistra) e poi i bronchi segmentali. Ogni bronco segmentale ventila un segmento broncopolmonare, un'unità del polmone con proprio bronco, propria arteria e propri confini: dieci a destra e otto-dieci a sinistra, dove alcuni segmenti si fondono.\n\nIn questo modello i segmenti broncopolmonari sono rappresentati come volumi colorati e si possono selezionare uno per uno, come nella pianificazione di una resezione chirurgica. Le cartilagini dei bronchi, mostrate separatamente, impediscono il collasso delle vie aeree durante l'espirazione. Nelle donne i polmoni hanno in media un volume del 10–12% inferiore a parità di statura.",
+   "facts": [
+    [
+     "Lobi",
+     "3 a destra, 2 a sinistra"
+    ],
+    [
+     "Segmenti",
+     "10 a destra, 8–10 a sinistra"
+    ],
+    [
+     "Capacità polmonare totale",
+     "circa 4,5 L nella donna adulta"
+    ]
+   ]
+  },
+  {
+   "ref": "muscoli-laringe",
+   "name": "Cartilagini della laringe",
+   "match": [
+    "arytenoid",
+    "cricoid cartilage",
+    "thyroid cartilage",
+    "corniculate",
+    "epiglottic cartilage"
+   ]
+  },
+  {
+   "ref": "fegato",
+   "match": [
+    "liver",
+    "hepatic",
+    "porta hepatis",
+    "ligamentum venosum",
+    "falciform",
+    "common bile duct",
+    "cystic",
+    "gallbladder",
+    "hepatoduodenal",
+    "anteroinferior segment",
+    "anterolateral segment",
+    "anterosuperior segment",
+    "inferomedial segment",
+    "posteroinferior segment",
+    "posterosuperior segment",
+    "superomedial segment"
+   ],
+   "desc": "Il fegato è la ghiandola più grande del corpo, con un peso di circa 1,2–1,4 kg nella donna. Produce la bile, sintetizza le proteine del plasma e i fattori della coagulazione, immagazzina glicogeno, ferro e vitamine e trasforma farmaci, ormoni e tossine. Gli enzimi epatici che metabolizzano alcol e alcuni farmaci lavorano in modo diverso nei due sessi: per esempio la stessa quantità di alcol produce nella donna concentrazioni nel sangue più alte.\n\nIn questo modello il fegato è suddiviso in segmenti funzionali, ciascuno con propri rami vascolari, e mostra le impronte lasciate dagli organi vicini (stomaco, duodeno, colon, rene, surrene), i legamenti che lo sostengono e le vie biliari fino all'ampolla di Vater."
+  },
+  {
+   "ref": "pancreas",
+   "match": [
+    "pancrea",
+    "hepatopancreatic",
+    "sphincter of hepatopancreatic"
+   ]
+  },
+  {
+   "ref": "intestino-tenue",
+   "match": [
+    "duoden",
+    "^jejunum$",
+    "ileum$"
+   ]
+  },
+  {
+   "ref": "intestino-crasso",
+   "match": [
+    "colon",
+    "^rectum$",
+    "appendix",
+    "^caecum$",
+    "ileocecal"
+   ]
+  },
+  {
+   "key": "reni-f",
+   "ref": "reni",
+   "name": "Reni e vie urinarie",
+   "match": [
+    "kidney",
+    "renal",
+    "calyx",
+    "^ureter",
+    "urinary bladder",
+    "trigone"
+   ],
+   "desc": "I reni, lunghi circa 11 cm, si trovano ai lati della colonna dietro il peritoneo. Questo modello ne mostra l'anatomia interna: la corticale esterna, dove si trovano i glomeruli; le piramidi della midollare, con i tubuli che concentrano l'urina; le colonne renali tra una piramide e l'altra; le papille, da cui l'urina goccia nei calici minori, che confluiscono nei calici maggiori e nella pelvi renale.\n\nGli ureteri portano l'urina alla vescica, dove sboccano negli orifizi ureterali ai vertici del trigono. Nella donna l'uretra è lunga solo 3–4 cm: per questo le infezioni urinarie sono molto più frequenti che negli uomini.",
+   "facts": [
+    [
+     "Nefroni per rene",
+     "circa 1 milione"
+    ],
+    [
+     "Calici minori per rene",
+     "circa 7–13"
+    ],
+    [
+     "Uretra femminile",
+     "3–4 cm"
+    ]
+   ]
+  },
+  {
+   "key": "utero",
+   "name": "Utero e cervice",
+   "sys": "reproductive",
+   "match": [
+    "uter(us|ine)( |$)",
+    "^body of uterus$",
+    "fundus of uterus",
+    "wall of uterus",
+    "^cornua$",
+    "lower uterine segment",
+    "^vagina$",
+    "uterovesical",
+    "uterine (artery|vein)",
+    "^uterine cervix$",
+    "cervicovaginal",
+    "cervical os$"
+   ],
+   "exclude": [
+    "uterine tube"
+   ],
+   "desc": "L'utero è un organo muscolare cavo a forma di pera rovesciata, lungo circa 7–8 cm in una donna che non ha avuto gravidanze. Si distinguono il fondo, il corpo, l'istmo e la cervice, che sporge in vagina con l'orifizio esterno. La parete ha tre strati: perimetrio esterno, miometrio muscolare e endometrio interno, che si ispessisce a ogni ciclo e, se non avviene l'impianto, si sfalda con la mestruazione.\n\nIn gravidanza l'utero cresce fino a circa 1 kg e il suo volume aumenta di centinaia di volte; il segmento uterino inferiore si assottiglia e diventa la sede dove si esegue di solito l'incisione del taglio cesareo. Le contrazioni del miometrio, stimolate dall'ossitocina, guidano il parto.",
+   "facts": [
+    [
+     "Lunghezza",
+     "circa 7–8 cm"
+    ],
+    [
+     "Peso",
+     "circa 50–70 g (fino a 1 kg a termine)"
+    ],
+    [
+     "Strati della parete",
+     "perimetrio, miometrio, endometrio"
+    ]
+   ]
+  },
+  {
+   "key": "ovaie-tube",
+   "name": "Ovaie e tube uterine",
+   "sys": "reproductive",
+   "match": [
+    "ovar",
+    "uterine tube",
+    "mesosalpinx",
+    "mesovarium"
+   ],
+   "desc": "Le ovaie, grandi come una mandorla (circa 3 × 2 × 1 cm), contengono i follicoli, ciascuno con un ovocita circondato da cellule che producono estrogeni. A ogni ciclo un follicolo dominante matura e libera l'ovocita (ovulazione); ciò che resta diventa il corpo luteo, che produce progesterone.\n\nLe tube uterine, lunghe 10–12 cm, raccolgono l'ovocita con le fimbrie, sottili frange mobili dell'infundibolo, e lo spingono verso l'utero con le ciglia e le contrazioni della parete. La fecondazione avviene di solito nell'ampolla, il tratto più largo. Le ovaie sono sostenute dal legamento sospensore, che porta vasi e nervi, e dal legamento proprio, che le collega all'utero.",
+   "facts": [
+    [
+     "Dimensioni dell'ovaio",
+     "circa 3 × 2 × 1 cm"
+    ],
+    [
+     "Lunghezza della tuba",
+     "10–12 cm"
+    ],
+    [
+     "Sede della fecondazione",
+     "ampolla della tuba"
+    ]
+   ]
+  },
+  {
+   "key": "legamenti-utero",
+   "name": "Legamenti dell'utero",
+   "sys": "reproductive",
+   "match": [
+    "broad ligament",
+    "round ligament of uterus",
+    "cardinal ligament",
+    "uterosacral",
+    "ovarian ligament",
+    "suspensory ligament of ovary"
+   ],
+   "desc": "L'utero non è fissato rigidamente: è sostenuto da un insieme di legamenti che gli permettono di spostarsi quando la vescica o il retto si riempiono e di crescere in gravidanza. Il legamento largo è una piega di peritoneo che avvolge utero, tube e ovaie. Il legamento rotondo va dall'angolo dell'utero al canale inguinale e mantiene l'utero inclinato in avanti.\n\nI legamenti cardinali e uterosacrali, alla base della cervice, sono il principale sostegno contro la discesa dell'utero; il loro indebolimento, per esempio dopo parti difficili o con l'età, può causare il prolasso uterino.",
+   "facts": [
+    [
+     "Sostegno principale",
+     "legamenti cardinali e uterosacrali"
+    ]
+   ]
+  },
+  {
+   "key": "mammella",
+   "name": "Ghiandola mammaria",
+   "sys": "reproductive",
+   "match": [
+    "mammary",
+    "lactiferous",
+    "nipple",
+    "areola",
+    "suspensory ligament of breast",
+    "areolar tubercle"
+   ],
+   "desc": "La mammella è una ghiandola sudoripara modificata. È formata da 15–20 lobi, ciascuno con il proprio dotto galattoforo che si apre sul capezzolo; prima dello sbocco ogni dotto si allarga in un seno galattoforo. I lobi sono immersi nel tessuto adiposo, che determina in gran parte la forma e il volume della mammella, e sono sostenuti dai legamenti di Cooper, che la collegano alla cute e alla fascia del muscolo pettorale.\n\nIn gravidanza estrogeni e progesterone fanno crescere i dotti e gli alveoli; dopo il parto la prolattina avvia la produzione del latte e l'ossitocina ne provoca l'emissione. I tubercoli di Montgomery dell'areola secernono una sostanza che lubrifica e protegge il capezzolo.",
+   "facts": [
+    [
+     "Lobi",
+     "15–20 per mammella"
+    ],
+    [
+     "Ormoni della lattazione",
+     "prolattina, ossitocina"
+    ]
+   ]
+  },
+  {
+   "key": "placenta",
+   "name": "Placenta e cordone ombelicale",
+   "sys": "pregnancy",
+   "match": [
+    "placenta",
+    "chorionic",
+    "basal plate",
+    "amnion",
+    "umbilical"
+   ],
+   "desc": "La placenta si forma dall'unione di tessuti fetali (il corion) e materni (la decidua, cioè l'endometrio trasformato). Il lato fetale, la placca coriale, porta i vasi del cordone; il lato materno, la placca basale, aderisce alla parete uterina. Tra le due, i villi coriali pescano nel sangue materno e assicurano gli scambi.\n\nLa placenta produce anche ormoni: la gonadotropina corionica (hCG), quella rilevata dai test di gravidanza, e grandi quantità di progesterone ed estrogeni. Il cordone ombelicale, lungo circa 50–60 cm, contiene due arterie e una vena immerse in una gelatina protettiva; l'amnios avvolge il feto nel liquido amniotico.",
+   "facts": [
+    [
+     "Peso a termine",
+     "circa 500 g"
+    ],
+    [
+     "Diametro",
+     "circa 20–22 cm"
+    ],
+    [
+     "Vasi del cordone",
+     "2 arterie, 1 vena"
+    ]
+   ]
+  },
+  {
+   "key": "midollo",
+   "name": "Midollo spinale",
+   "sys": "nervous",
+   "match": [
+    "spinal cord"
+   ],
+   "desc": "Il midollo spinale, lungo circa 42–45 cm nella donna, scende dal bulbo fino alla prima-seconda vertebra lombare. Si divide in 31 segmenti (8 cervicali, 12 toracici, 5 lombari, 5 sacrali, 1 coccigeo), ciascuno con un paio di nervi spinali; il modello li mostra uno per uno.\n\nPoiché il midollo è più corto della colonna, i segmenti non corrispondono alle vertebre con lo stesso numero: i segmenti lombari e sacrali si trovano all'altezza delle ultime vertebre toraciche. Per questo la puntura lombare si esegue sotto la seconda vertebra lombare, dove il canale contiene solo le radici nervose della cauda equina. Nel midollo la sostanza grigia, a forma di farfalla, è al centro, circondata dalla sostanza bianca delle vie ascendenti e discendenti.",
+   "facts": [
+    [
+     "Segmenti",
+     "31"
+    ],
+    [
+     "Termine",
+     "L1–L2"
+    ],
+    [
+     "Rigonfiamenti",
+     "cervicale (arti superiori) e lombare (arti inferiori)"
+    ]
+   ]
+  },
+  {
+   "ref": "encefalo",
+   "match": [
+    "gyrus",
+    "gyri",
+    "lobule",
+    "pole$",
+    "operculum",
+    "cortex",
+    "planum",
+    "cuneus",
+    "precuneus",
+    "subcallosal",
+    "corpus callosum",
+    "anterior commissure",
+    "white matter",
+    "limen insula",
+    "piriform region"
+   ],
+   "exclude": [
+    "kidney"
+   ]
+  },
+  {
+   "ref": "strutture-profonde",
+   "match": [
+    "caudate",
+    "putamen",
+    "globus pallidus",
+    "thalam",
+    "pulvinar",
+    "hth",
+    "hypothalamus",
+    "geniculate",
+    "habenular",
+    "claustrum",
+    "subthalamic",
+    "zona incerta",
+    "accumbens",
+    "basal forebrain",
+    "septal nuclei",
+    "mammillothalamic",
+    "pretectal",
+    "nuclear complex"
+   ],
+   "exclude": [
+    "liver"
+   ]
+  },
+  {
+   "ref": "limbico",
+   "match": [
+    "hippocamp",
+    "amygd",
+    "cingulate",
+    "parahippocampal",
+    "fornix",
+    "cortical nucleus",
+    "basolateral",
+    "basomedial",
+    "lateral nucleus",
+    "medial nucleus",
+    "central nuclear group",
+    "bed nucleus",
+    "gyrus ambiens",
+    "olfactory"
+   ]
+  },
+  {
+   "ref": "tronco-cervelletto",
+   "match": [
+    "cerebell",
+    "vermis",
+    "pons",
+    "pontine",
+    "medulla oblongata",
+    "midbrain",
+    "cerebral peduncle",
+    "colliculus",
+    "red nucleus",
+    "substantia nigra",
+    "inferior olive",
+    "hindbrain",
+    "inferior cerebellar"
+   ]
+  },
+  {
+   "ref": "ventricoli",
+   "match": [
+    "ventricle",
+    "horn of lateral",
+    "cerebral aqueduct",
+    "central canal"
+   ],
+   "exclude": [
+    "heart ventricle",
+    "of ventricle"
+   ]
+  },
+  {
+   "ref": "occhio",
+   "match": [
+    "cornea",
+    "sclera",
+    "^iris$",
+    "^pupil$",
+    "^lens$",
+    "vitreous",
+    "choroid",
+    "retina",
+    "fovea",
+    "macula",
+    "optic disc",
+    "ciliary",
+    "aqueous",
+    "ora serrata",
+    "trabecular meshwork",
+    "scleral venous sinus",
+    "corneoscleral",
+    "suspensory ligament of lens",
+    "conjunctiva"
+   ]
+  },
+  {
+   "ref": "nervi-orbita",
+   "name": "Vie visive",
+   "match": [
+    "optic (nerve|chiasma|tract|radiation)",
+    "dura mater"
+   ],
+   "desc": "Le vie visive portano le informazioni dalla retina alla corteccia occipitale. Il nervo ottico, rivestito dalle meningi come un prolungamento del cervello, contiene circa 1,2 milioni di fibre. Nel chiasma ottico le fibre provenienti dalla metà nasale di ciascuna retina si incrociano, così ogni emisfero riceve le immagini della metà opposta del campo visivo.\n\nDal chiasma i tratti ottici raggiungono il nucleo genicolato laterale del talamo; da qui le radiazioni ottiche si aprono a ventaglio fino alla corteccia visiva primaria, attorno alla scissura calcarina del lobo occipitale.",
+   "facts": [
+    [
+     "Fibre del nervo ottico",
+     "circa 1,2 milioni"
+    ],
+    [
+     "Stazione talamica",
+     "nucleo genicolato laterale"
+    ]
+   ]
+  },
+  {
+   "ref": "endocrine",
+   "name": "Ghiandola pineale",
+   "match": [
+    "pineal body"
+   ],
+   "desc": "La ghiandola pineale, o epifisi, è una piccola struttura a forma di pigna situata al centro dell'encefalo, dietro il terzo ventricolo. Produce melatonina soprattutto di notte, quando la retina segnala il buio attraverso un percorso che passa per il nucleo soprachiasmatico dell'ipotalamo. La melatonina aiuta a sincronizzare il ritmo sonno-veglia e altri ritmi circadiani.",
+   "facts": [
+    [
+     "Lunghezza",
+     "circa 8 mm"
+    ],
+    [
+     "Ormone",
+     "melatonina"
+    ]
+   ]
+  },
+  {
+   "key": "milza-f",
+   "ref": "milza-timo",
+   "match": [
+    "spleen",
+    "thymus",
+    "palatine tonsil"
+   ],
+   "name": "Milza, timo e tonsille"
+  },
+  {
+   "key": "linfonodo",
+   "name": "Linfonodo",
+   "sys": "lymphatic",
+   "match": [
+    "lymph"
+   ],
+   "desc": "Il modello include un linfonodo isolato, ingrandito nei suoi compartimenti. Nel corpo ce ne sono circa 600, lungo i vasi linfatici, raggruppati soprattutto nel collo, nelle ascelle, nell'inguine e attorno ai visceri.\n\nLa linfa entra dai vasi afferenti sulla superficie convessa, attraversa i seni e esce dal vaso efferente all'ilo. Nella corticale si trovano i follicoli, dove maturano i linfociti B; nella paracorteccia i linfociti T incontrano le cellule che presentano gli antigeni; la midollare contiene plasmacellule che producono anticorpi. Durante un'infezione i linfonodi si ingrossano perché questi linfociti si moltiplicano.",
+   "facts": [
+    [
+     "Linfonodi nel corpo",
+     "circa 600"
+    ],
+    [
+     "Dimensioni",
+     "da pochi millimetri a 2 cm"
+    ]
+   ]
+  },
+  {
+   "ref": "cute",
+   "match": [
+    "skin of body",
+    "interlobar adipose"
+   ]
+  }
+ ]
+}
